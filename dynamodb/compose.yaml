@@ -1,0 +1,24 @@
+version: '3.8'
+
+networks:
+  dynamodb-network:
+    driver: bridge
+
+volumes:
+  dynamodbdata:
+
+services:
+  db:
+    image: "amazon/dynamodb-local:latest"
+    container_name: db-dynamodb
+    networks:
+      - dynamodb-network
+    restart: always
+    ports:
+      - '8000:8000'
+    user: root
+    volumes:
+      - dynamodbdata:/home/dynamodblocal/data
+      - ./backup:/backup
+    working_dir: /home/dynamodblocal
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ./data"

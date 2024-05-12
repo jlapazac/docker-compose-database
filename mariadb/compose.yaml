@@ -1,0 +1,23 @@
+version: '3.9'
+
+networks:
+  mariadb-network:
+    driver: bridge
+
+volumes:
+  mysqldata:
+
+services:
+  db:
+    image: mariadb
+    container_name: db-mariadb
+    networks:
+      - mariadb-network
+    restart: always
+    env_file:
+      - variables.env
+    ports:
+      - '3306:3306'
+    volumes:
+      - mysqldata:/var/lib/mysql
+      - ./backup:/backup

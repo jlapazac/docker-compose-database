@@ -1,0 +1,25 @@
+version: '3.9'
+
+networks:
+  mssql-network:
+    driver: bridge
+
+volumes:
+  sqldata:
+  sqllog:
+
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    container_name: db-sqlserver
+    networks:
+      - mssql-network
+    restart: always
+    env_file:
+      - variables.env
+    ports:
+      - '1433:1433'
+    volumes:
+      - sqldata:/var/opt/mssql/data
+      - sqllog:/var/opt/mssql/log
+      - ./backup:/var/opt/mssql/backup
